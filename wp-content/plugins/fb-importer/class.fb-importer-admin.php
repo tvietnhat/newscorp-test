@@ -28,6 +28,7 @@ class FB_Importer_Plugin_Admin {
 		// register plugin styles
 		$styles = array(
 			'fb-importer-plugin-admin'				=>  plugins_url( 'css/admin.css', __FILE__ ),
+			'dropzone'								=>  plugins_url( 'css/dropzone.min.css', __FILE__ ),
 		);
 		
 		foreach( $styles as $k => $v )
@@ -37,15 +38,18 @@ class FB_Importer_Plugin_Admin {
 		
 	    wp_enqueue_style( 'fb-importer-plugin-admin' );
 
+		wp_register_script('dropzone', plugins_url( 'js/dropzone.min.js', __FILE__ ), array('jquery'), false, true );
 	}
 
-	public static function view($name) {
+	public static function load_view($name) {
 		$file = FB_IMPORTER_PLUGIN_DIR . 'views/'. $name . '.php';
 
 		include( $file );
 	}
 
 	public static function display_page_import_posts() {
-		self::view('import-posts');
+		wp_enqueue_style('dropzone');
+		wp_enqueue_script('dropzone');
+		self::load_view('import-posts');
 	}
 }
